@@ -6,7 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "lint": "ng lint",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit",
+    "prepare": "husky"
   },
   "private": true,
   "packageManager": "pnpm@11.22.0",
@@ -17,16 +20,29 @@
     "@angular/forms": "^21.2.0",
     "@angular/platform-browser": "^21.2.0",
     "@angular/router": "^21.2.0",
+    "devextreme": "26.1.5",
+    "devextreme-angular": "26.1.5",
+    "devextreme-schematics": "^1.18.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
+    "@angular-eslint/builder": "21.4.0",
     "@angular/build": "^21.2.29",
     "@angular/cli": "^21.2.29",
     "@angular/compiler-cli": "^21.2.0",
+    "@eslint/js": "^10.0.1",
+    "angular-eslint": "21.4.0",
+    "devextreme-cli": "latest",
+    "devextreme-themebuilder": "26.1.5",
+    "eslint": "^10.3.0",
+    "husky": "^9.1.7",
     "jsdom": "^28.0.0",
+    "lint-staged": "^17.6.0",
     "prettier": "^3.8.1",
+    "sass-embedded": "1.66.0",
     "typescript": "~5.9.2",
+    "typescript-eslint": "8.59.2",
     "vitest": "^4.0.8"
   }
 }
