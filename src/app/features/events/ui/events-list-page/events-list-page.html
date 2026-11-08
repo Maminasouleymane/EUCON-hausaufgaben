@@ -70,8 +70,8 @@
 
 <app-add-event-popup
   [visible]="isAddPopupOpen()"
-  [statuses]="statuses()"
-  [locations]="locations()"
+  [statuses]="statusesResource.value()"
+  [locations]="locationsResource.value()"
   (visibleChange)="isAddPopupOpen.set($event)"
   (save)="onAddEventSave($event)"
 />

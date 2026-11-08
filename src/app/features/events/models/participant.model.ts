@@ -7,6 +7,11 @@ export interface Participant {
   role: string;
 }
 
+export interface ParticipantSummaryItem {
+  category: string;
+  participantCount: number;
+}
+
 export const PARTICIPANTS_COLUMNS: DxDataGridTypes.Column<Participant>[] = [
   {
     dataField: 'name',

@@ -5,12 +5,8 @@ import CustomStore from 'devextreme/data/custom_store';
 import { EVENT_COUNT } from '../models/constant';
 import { EventRecord } from '../models/event.model';
 import { Injectable } from '@angular/core';
+import { ParticipantSummaryItem } from '../models/participant.model';
 import query from 'devextreme/data/query';
-
-export interface ParticipantSummaryItem {
-  category: string;
-  participantCount: number;
-}
 
 @Injectable({ providedIn: 'root' })
 export class EventsService {

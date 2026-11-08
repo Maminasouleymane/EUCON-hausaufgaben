@@ -1,8 +1,8 @@
 import { ALL, EVENTS_TABS } from '../../models/constant';
-import { Component, computed, inject, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, resource, signal, viewChild } from '@angular/core';
 import { D_MMM_YYYY, DateRange } from '../../models/date.model';
 import { DxTextBoxComponent, DxTextBoxTypes } from 'devextreme-angular/ui/text-box';
-import { EventRecord, EventStatus, NewEventFormData } from '../../models/event.model';
+import { EventRecord, NewEventFormData } from '../../models/event.model';
 
 import { ActionBarAction } from '../../../../shared/models/action-bar.model';
 import { AddEventPopup } from '../add-event-popup/add-event-popup';
@@ -49,20 +49,26 @@ export class EventsListPage {
   protected readonly tabs = EVENTS_TABS;
   protected readonly dataSource = this.eventsService.createDataSource();
 
-  protected readonly statuses = signal<EventStatus[]>([]);
-  protected readonly locations = signal<string[]>([]);
+  protected readonly statusesResource = resource({
+    loader: () => this.statusesService.getStatuses(),
+    defaultValue: [],
+  });
+  protected readonly locationsResource = resource({
+    loader: () => this.locationsService.getLocations(),
+    defaultValue: [],
+  });
 
   protected readonly columns = computed<DxDataGridTypes.Column<EventRecord>[]>(() => [
     { dataField: 'name', caption: 'Event Name' },
     {
       dataField: 'location',
       caption: 'Location',
-      lookup: { dataSource: this.locations() },
+      lookup: { dataSource: this.locationsResource.value() },
     },
     {
       dataField: 'status',
       caption: 'Status',
-      lookup: { dataSource: this.statuses() },
+      lookup: { dataSource: this.statusesResource.value() },
     },
     { dataField: 'participantCount', caption: 'Participants', dataType: 'number' },
     {
@@ -74,8 +80,14 @@ export class EventsListPage {
     },
   ]);
 
-  protected readonly statusOptions = computed<string[]>(() => [ALL, ...this.statuses()]);
-  protected readonly locationOptions = computed<string[]>(() => [ALL, ...this.locations()]);
+  protected readonly statusOptions = computed<string[]>(() => [
+    ALL,
+    ...this.statusesResource.value(),
+  ]);
+  protected readonly locationOptions = computed<string[]>(() => [
+    ALL,
+    ...this.locationsResource.value(),
+  ]);
 
   protected readonly selectedStatus = signal<string>(ALL);
   protected readonly selectedLocation = signal<string>(ALL);
@@ -97,11 +109,6 @@ export class EventsListPage {
       onClick: () => this.onAdd(),
     },
   ];
-
-  constructor() {
-    this.statusesService.getStatuses().subscribe((statuses) => this.statuses.set(statuses));
-    this.locationsService.getLocations().subscribe((locations) => this.locations.set(locations));
-  }
 
   protected onSearchChange({ value }: DxTextBoxTypes.ValueChangedEvent): void {
     const searchTerm = value?.toString() ?? '';
@@ -154,32 +161,29 @@ export class EventsListPage {
     this.grid()?.exportToExcel(exportedFileName);
   }
 
-  protected onAddEventSave({
+  protected async onAddEventSave({
     name,
     location,
     status,
     date,
     participantCount,
-  }: NewEventFormData): void {
-    this.dataSource
-      .insert({
-        // id is generated server-side in EventsService.insert and ignored here.
+  }: NewEventFormData): Promise<void> {
+    try {
+      await this.dataSource.insert({
         id: 0,
         name: name,
         location: location ?? '',
         status: status ?? 'planned',
         date: date ?? new Date(),
         participantCount: participantCount ?? 3,
-      })
-      .then(() => {
-        notify('Event created successfully.', 'success', 2500);
-        this.isAddPopupOpen.set(false);
-        this.addPopup()?.resetForm();
-        this.grid()?.refresh();
-      })
-      .catch(() => {
-        notify('Failed to create event. Please try again.', 'error', 2500);
       });
+      notify('Event created successfully.', 'success', 2500);
+      this.isAddPopupOpen.set(false);
+      this.addPopup()?.resetForm();
+      this.grid()?.refresh();
+    } catch {
+      notify('Failed to create event. Please try again.', 'error', 2500);
+    }
   }
 
   private applyFilters(): void {
