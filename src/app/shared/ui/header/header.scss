@@ -1,0 +1,42 @@
+:host {
+  flex: 0 0 auto;
+  z-index: 1;
+  background: var(--color-dark-bg);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 64px;
+  padding: 0 16px;
+}
+
+.menu-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-md);
+  color: var(--color-dark-text);
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &__title {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--color-dark-text);
+  }
+}

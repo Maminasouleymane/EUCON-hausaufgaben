@@ -1,0 +1,22 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+.layout-body {
+  flex: 1;
+  min-height: 0;
+}
+
+.content {
+  height: 100%;
+  overflow: auto;
+  padding: 28px 32px;
+  background: var(--color-bg);
+}
+
+.navigation-menu-container {
+  height: 100%;
+  background-color: var(--color-surface);
+}

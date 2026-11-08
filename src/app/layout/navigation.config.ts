@@ -4,7 +4,7 @@ export interface NavItem {
   icon: string;
 }
 
-export const NAVIGATION: readonly NavItem[] = [
+export const NAVIGATION: NavItem[] = [
   { path: 'events', text: 'Events', icon: 'event' },
   { path: 'venues', text: 'Venues', icon: 'map' },
   { path: 'invoices', text: 'Invoices', icon: 'money' },

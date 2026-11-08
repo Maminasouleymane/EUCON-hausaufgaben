@@ -1,0 +1,12 @@
+<app-pop-up title="Add Event" [visible]="visible()" (visibleChange)="visibleChange.emit($event)">
+  <div popup-body>
+    <dx-form [(formData)]="formData" [items]="items()" labelMode="outside" [colCount]="1" />
+  </div>
+
+  <div popup-footer>
+    <div class="popup-actions">
+      <dx-button text="Cancel" stylingMode="outlined" (onClick)="close()" />
+      <dx-button text="Save" type="default" stylingMode="contained" (onClick)="onSave()" />
+    </div>
+  </div>
+</app-pop-up>

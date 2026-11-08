@@ -1,0 +1,84 @@
+:host {
+  display: block;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+
+  &__title {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  &__subtitle {
+    margin: 4px 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 10px;
+    flex: 0 0 auto;
+  }
+}
+
+::ng-deep .page-tabs {
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--color-border);
+
+  // DevExtreme stretches tabs to equal widths via flex-basis by default
+  // (no separate indicator element exists in this version to target) —
+  // shrink them to content width and draw the selected-tab underline
+  // ourselves instead.
+  .dx-tabs-wrapper {
+    justify-content: flex-start;
+  }
+
+  .dx-tab {
+    flex: 0 0 auto;
+    padding: 0 0 10px;
+    margin-right: 24px;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: 0.8125rem;
+  }
+
+  .dx-tab-selected {
+    position: relative;
+    color: var(--color-text);
+    font-weight: 600;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 2px;
+      background: var(--color-primary);
+    }
+  }
+}
+
+.action-bar__filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+
+  &:empty {
+    display: none;
+  }
+}

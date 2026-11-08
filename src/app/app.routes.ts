@@ -8,7 +8,14 @@ export const routes: Routes = [
     path: '',
     component: AppShell,
     children: [
-      ...NAVIGATION.map((item) => ({
+      {
+        path: 'events',
+        loadComponent: () =>
+          import('./features/events/ui/events-list-page/events-list-page').then(
+            (m) => m.EventsListPage,
+          ),
+      },
+      ...NAVIGATION.filter((item) => item.path !== 'events').map((item) => ({
         path: item.path,
         component: PagePlaceholder,
         data: { title: item.text },

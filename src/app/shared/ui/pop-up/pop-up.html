@@ -1,0 +1,11 @@
+<dx-popup
+  [title]="title()"
+  [width]="420"
+  height="auto"
+  [visible]="visible()"
+  [showCloseButton]="true"
+  (visibleChange)="visibleChange.emit($event)"
+>
+  <ng-content select="[popup-body]" />
+  <ng-content select="[popup-footer]" />
+</dx-popup>

@@ -1,0 +1,82 @@
+<app-list-page
+  title="Events"
+  subtitle="Plan, track and manage all events."
+  [tabs]="tabs"
+  addButtonText="Add Event"
+  (add)="onAdd()"
+  (exportExcel)="onExport()"
+>
+  <div filters class="events-filters">
+    <dx-text-box
+      class="filter-search"
+      placeholder="Search events..."
+      mode="search"
+      [showClearButton]="true"
+      (onInput)="onSearch($event.component.option('text') ?? '')"
+    />
+
+    <div class="filter-field">
+      <span class="filter-field__label">Status:</span>
+      <dx-select-box
+        class="filter-field__input"
+        [items]="statusOptions()"
+        [value]="selectedStatus()"
+        stylingMode="underlined"
+        [showDropDownButton]="true"
+        [dropDownOptions]="{ width: 'auto', minWidth: 160 }"
+        (onValueChanged)="onStatusChange($event)"
+      />
+    </div>
+
+    <div class="filter-field">
+      <span class="filter-field__label">Location:</span>
+      <dx-select-box
+        class="filter-field__input"
+        [items]="locationOptions()"
+        [value]="selectedLocation()"
+        stylingMode="underlined"
+        [showDropDownButton]="true"
+        [dropDownOptions]="{ width: 'auto', minWidth: 160 }"
+        (onValueChanged)="onLocationChange($event)"
+      />
+    </div>
+
+    <dx-date-range-box
+      class="filter-date-range"
+      startDatePlaceholder="Start date"
+      endDatePlaceholder="End date"
+      labelMode="hidden"
+      [startDate]="dateRange().start"
+      [endDate]="dateRange().end"
+      (onValueChanged)="onDateRangeChange($event)"
+    />
+
+    <button type="button" class="reset-btn" (click)="onResetFilters()">
+      <i class="dx-icon dx-icon-revert"></i>
+      Reset filters
+    </button>
+  </div>
+
+  <app-data-grid
+    primary
+    [dataSource]="dataSource"
+    [columnsDefinition]="columns()"
+    [masterDetailEnabled]="true"
+    [cellPrepared]="onStatusCellPrepared"
+    storageKey="events-grid"
+    pagerInfoText="Page {0} of {1} ({2} events)"
+  >
+    <ng-template let-detailInfo>
+      <app-event-participants [eventId]="detailInfo.key" />
+    </ng-template>
+  </app-data-grid>
+  <app-events-statistics secondary [filter]="activeFilter()" />
+</app-list-page>
+
+<app-add-event-popup
+  [visible]="isAddPopupOpen()"
+  [statuses]="statuses()"
+  [locations]="locations()"
+  (visibleChange)="isAddPopupOpen.set($event)"
+  (save)="onAddEventSave($event)"
+/>

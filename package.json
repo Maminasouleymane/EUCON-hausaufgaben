@@ -22,7 +22,9 @@
     "@angular/router": "^21.2.0",
     "devextreme": "26.1.5",
     "devextreme-angular": "26.1.5",
+    "devextreme-exceljs-fork": "^4.5.0",
     "devextreme-schematics": "^1.18.0",
+    "file-saver": "^2.0.5",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
@@ -32,6 +34,7 @@
     "@angular/cli": "^21.2.29",
     "@angular/compiler-cli": "^21.2.0",
     "@eslint/js": "^10.0.1",
+    "@types/file-saver": "^2.0.7",
     "angular-eslint": "21.4.0",
     "devextreme-cli": "latest",
     "devextreme-themebuilder": "26.1.5",

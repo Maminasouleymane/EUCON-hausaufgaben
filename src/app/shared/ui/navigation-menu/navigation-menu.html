@@ -1,0 +1,9 @@
+<dx-tree-view
+  [items]="items()"
+  keyExpr="path"
+  displayExpr="text"
+  selectionMode="single"
+  [focusStateEnabled]="false"
+  width="100%"
+  (onItemClick)="onItemClick($event)"
+/>

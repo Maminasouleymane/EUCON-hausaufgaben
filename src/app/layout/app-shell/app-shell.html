@@ -1,1 +1,23 @@
-app-shell
+<app-header [title]="title" (menuToggle)="toggleMenu()" />
+
+<dx-drawer
+  class="layout-body"
+  position="before"
+  template="panel"
+  openedStateMode="shrink"
+  revealMode="expand"
+  [minSize]="56"
+  [opened]="menuOpened()"
+>
+  <div class="navigation-menu-container" *dxTemplate="let _ of 'panel'">
+    <app-navigation-menu
+      [compactMode]="compactMode()"
+      [selectedPath]="selectedPath()"
+      (itemClick)="onNavigate($event)"
+    />
+  </div>
+
+  <main class="content">
+    <router-outlet />
+  </main>
+</dx-drawer>

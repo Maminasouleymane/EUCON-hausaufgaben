@@ -1,0 +1,18 @@
+<app-action-bar
+  [title]="title()"
+  [subtitle]="subtitle()"
+  [tabs]="tabs()"
+  [selectedTabIndex]="selectedTabIndex()"
+  [addButtonText]="addButtonText()"
+  (tabIndexChange)="selectedTabIndex.set($event)"
+  (add)="add.emit()"
+  (exportExcel)="exportExcel.emit()"
+>
+  <ng-content select="[filters]" filters />
+</app-action-bar>
+
+@if (selectedTabIndex() === 0) {
+  <ng-content select="[primary]" />
+} @else {
+  <ng-content select="[secondary]" />
+}

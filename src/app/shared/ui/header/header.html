@@ -1,0 +1,11 @@
+<header>
+  <button type="button" class="menu-button" (click)="menuToggle.emit()" aria-label="Toggle menu">
+    <i class="dx-icon dx-icon-menu"></i>
+  </button>
+
+  <div class="brand">
+    @if (title()) {
+      <span class="brand__title">{{ title() }}</span>
+    }
+  </div>
+</header>
