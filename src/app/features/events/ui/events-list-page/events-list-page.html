@@ -48,20 +48,24 @@
     />
   </app-filter-bar>
 
-  <app-data-grid
-    primary
-    [dataSource]="dataSource"
-    [columnsDefinition]="columns()"
-    [masterDetailEnabled]="true"
-    [cellPrepared]="onStatusCellPrepared"
-    storageKey="events-grid-v2"
-    pagerInfoText="Page {0} of {1} ({2} events)"
-  >
-    <ng-template let-detailInfo>
-      <app-event-participants [eventId]="detailInfo.key" />
-    </ng-template>
-  </app-data-grid>
-  <app-events-statistics secondary [filter]="activeFilter()" />
+  <ng-template appListPageTab>
+    <app-data-grid
+      [dataSource]="dataSource"
+      [columnsDefinition]="columns()"
+      [masterDetailEnabled]="true"
+      [cellPrepared]="onStatusCellPrepared"
+      storageKey="events-grid-v2"
+      pagerInfoText="Page {0} of {1} ({2} events)"
+    >
+      <ng-template let-detailInfo>
+        <app-event-participants [eventId]="detailInfo.key" />
+      </ng-template>
+    </app-data-grid>
+  </ng-template>
+
+  <ng-template appListPageTab>
+    <app-events-statistics [filter]="activeFilter()" />
+  </ng-template>
 </app-list-page>
 
 <app-add-event-popup

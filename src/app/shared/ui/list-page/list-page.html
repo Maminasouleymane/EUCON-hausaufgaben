@@ -9,8 +9,8 @@
   <ng-content select="[filters]" filters />
 </app-action-bar>
 
-@if (selectedTabIndex() === 0) {
-  <ng-content select="[primary]" />
-} @else {
-  <ng-content select="[secondary]" />
+@for (tab of tabTemplates(); track tab; let i = $index) {
+  @if (selectedTabIndex() === i) {
+    <ng-container [ngTemplateOutlet]="tab.templateRef" />
+  }
 }

@@ -1,11 +1,13 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, contentChildren, input, signal } from '@angular/core';
 
 import { ActionBar } from '../action-bar/action-bar';
 import { ActionBarAction } from '../../models/action-bar.model';
+import { ListPageTab } from '../../directives/list-page-tab/list-page-tab';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-list-page',
-  imports: [ActionBar],
+  imports: [ActionBar, NgTemplateOutlet],
   templateUrl: './list-page.html',
   styleUrl: './list-page.scss',
 })
@@ -16,4 +18,5 @@ export class ListPage {
   readonly actions = input<ActionBarAction[]>([]);
 
   protected readonly selectedTabIndex = signal(0);
+  protected readonly tabTemplates = contentChildren(ListPageTab);
 }

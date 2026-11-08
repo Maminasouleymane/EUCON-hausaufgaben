@@ -18,6 +18,7 @@ import { EventsStatistics } from '../events-statistics/events-statistics';
 import { FilterBar } from '../../../../shared/ui/filter-bar/filter-bar';
 import { FilterField } from '../../../../shared/ui/filter-field/filter-field';
 import { ListPage } from '../../../../shared/ui/list-page/list-page';
+import { ListPageTab } from '../../../../shared/directives/list-page-tab/list-page-tab';
 import { LocationsService } from '../../services/locations.service';
 import { StatusesService } from '../../services/statuses.service';
 import notify from 'devextreme/ui/notify';
@@ -26,6 +27,7 @@ import notify from 'devextreme/ui/notify';
   selector: 'app-events-list-page',
   imports: [
     ListPage,
+    ListPageTab,
     DataGrid,
     FilterBar,
     FilterField,

@@ -1,6 +1,7 @@
 import { Component, TemplateRef, contentChild, input, signal, viewChild } from '@angular/core';
 
 import CustomStore from 'devextreme/data/custom_store';
+import { DD_MM_YYYY } from '../../models/date.model';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { DxTemplateDirective } from 'devextreme-angular/core';
@@ -11,7 +12,6 @@ import { SingleMultipleOrNone } from 'devextreme/common';
 import { Workbook } from 'devextreme-exceljs-fork';
 import { exportDataGrid } from 'devextreme-angular/common/export/excel';
 import { saveAs } from 'file-saver';
-import { DD_MM_YYYY } from '../../../features/events/models/date.model';
 
 @Component({
   selector: 'app-data-grid',
