@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+
 import { AppShell } from './layout/app-shell/app-shell';
 import { NAVIGATION } from './layout/navigation.config';
 import { PagePlaceholder } from './shared/ui/page-placeholder/page-placeholder';

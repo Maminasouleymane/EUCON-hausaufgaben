@@ -1,11 +1,10 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-
-import { DxDrawerComponent } from 'devextreme-angular/ui/drawer';
-import { DxTemplateDirective } from 'devextreme-angular/core';
-import { Header } from '../../shared/ui/header/header';
-import { NavigationMenu } from '../../shared/ui/navigation-menu/navigation-menu';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { Header } from '@shared/ui/header/header';
+import { NavigationMenu } from '@shared/ui/navigation-menu/navigation-menu';
+import { DxTemplateDirective } from 'devextreme-angular/core';
+import { DxDrawerComponent } from 'devextreme-angular/ui/drawer';
 
 @Component({
   selector: 'app-shell',

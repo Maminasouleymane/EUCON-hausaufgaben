@@ -1,17 +1,17 @@
-import { Component, TemplateRef, contentChild, input, signal, viewChild } from '@angular/core';
-
-import CustomStore from 'devextreme/data/custom_store';
-import { DD_MM_YYYY } from '../../models/date.model';
-import { DxDataGridComponent } from 'devextreme-angular';
-import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
-import { DxTemplateDirective } from 'devextreme-angular/core';
-import { ErrorState } from '../error-state/error-state';
 import { NgTemplateOutlet } from '@angular/common';
-import { PagerPageSize } from 'devextreme/common/grids';
+import { Component, contentChild, input, signal, TemplateRef, viewChild } from '@angular/core';
+import { DD_MM_YYYY } from '@shared/models/date.model';
 import { SingleMultipleOrNone } from 'devextreme/common';
-import { Workbook } from 'devextreme-exceljs-fork';
+import { PagerPageSize } from 'devextreme/common/grids';
+import CustomStore from 'devextreme/data/custom_store';
+import { DxDataGridComponent } from 'devextreme-angular';
 import { exportDataGrid } from 'devextreme-angular/common/export/excel';
+import { DxTemplateDirective } from 'devextreme-angular/core';
+import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
+import { Workbook } from 'devextreme-exceljs-fork';
 import { saveAs } from 'file-saver';
+
+import { ErrorState } from '../error-state/error-state';
 
 @Component({
   selector: 'app-data-grid',

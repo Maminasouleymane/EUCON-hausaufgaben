@@ -1,3 +1,5 @@
+import { SortDescriptor } from 'devextreme/data';
+
 import {
   ERROR_RATE,
   EVENT_NAMES,
@@ -12,9 +14,7 @@ import {
   STATUSES,
 } from '../models/constant';
 import { EventRecord, NewEventFormData } from '../models/event.model';
-
 import { Participant } from '../models/participant.model';
-import { SortDescriptor } from 'devextreme/data';
 
 export function randomItem<T>(items: readonly T[]): T {
   return items[Math.floor(Math.random() * items.length)];
@@ -25,6 +25,7 @@ export function generateEvents(count: number): EventRecord[] {
 
   for (let id = 1; id <= count; id++) {
     const date = new Date();
+    // Spreads dates across a 2-year window: 365 days back to 365 days ahead of today.
     date.setDate(date.getDate() + Math.floor(Math.random() * 730) - 365);
 
     events.push({
@@ -60,6 +61,7 @@ export function generateParticipants(): Participant[] {
   return participants;
 }
 
+// Mocks a backend round-trip: random latency plus an ERROR_RATE chance of rejecting.
 export function simulateNetwork<T>(value: T): Promise<T> {
   const latency = MIN_LATENCY_MS + Math.random() * (MAX_LATENCY_MS - MIN_LATENCY_MS);
 
@@ -74,6 +76,7 @@ export function simulateNetwork<T>(value: T): Promise<T> {
   });
 }
 
+// Normalizes DevExtreme's sort option (string, object, or array of either) into one shape.
 export function toSortDescriptors(
   sort: SortDescriptor<EventRecord> | SortDescriptor<EventRecord>[],
 ): { selector: string; desc?: boolean }[] {

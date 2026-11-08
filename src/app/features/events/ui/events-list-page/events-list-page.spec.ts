@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Signal, WritableSignal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NewEventFormData } from '@features/events/models/event.model';
 
 import { EventsListPage } from './events-list-page';
-import { NewEventFormData } from '../../models/event.model';
 
 interface EventsListPageInternals {
   activeFilter: () => unknown[] | null;

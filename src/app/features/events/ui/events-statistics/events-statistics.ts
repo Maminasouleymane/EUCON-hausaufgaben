@@ -1,7 +1,6 @@
 import { Component, inject, input, resource } from '@angular/core';
-
-import { ErrorState } from '../../../../shared/ui/error-state/error-state';
-import { EventsService } from '../../services/events.service';
+import { EventsService } from '@features/events/services/events.service';
+import { ErrorState } from '@shared/ui/error-state/error-state';
 
 @Component({
   selector: 'app-events-statistics',

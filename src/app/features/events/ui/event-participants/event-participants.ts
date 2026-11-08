@@ -1,8 +1,7 @@
 import { Component, computed, inject, input } from '@angular/core';
-
-import { DataGrid } from '../../../../shared/ui/data-grid/data-grid';
-import { PARTICIPANTS_COLUMNS } from '../../models/participant.model';
-import { ParticipantsService } from '../../services/participants.service';
+import { PARTICIPANTS_COLUMNS } from '@features/events/models/participant.model';
+import { ParticipantsService } from '@features/events/services/participants.service';
+import { DataGrid } from '@shared/ui/data-grid/data-grid';
 
 @Component({
   selector: 'app-event-participants',

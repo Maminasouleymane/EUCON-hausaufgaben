@@ -1,11 +1,10 @@
 import { Component, computed, input, output, signal, viewChild } from '@angular/core';
-import { DxFormComponent, DxFormTypes } from 'devextreme-angular/ui/form';
-import { EventStatus, NewEventFormData } from '../../models/event.model';
-
-import { D_MMM_YYYY } from '../../models/date.model';
+import { D_MMM_YYYY } from '@features/events/models/date.model';
+import { EventStatus, NewEventFormData } from '@features/events/models/event.model';
+import { createEmptyFormData } from '@features/events/utils/helpers';
+import { PopUp } from '@shared/ui/pop-up/pop-up';
 import { DxButtonComponent } from 'devextreme-angular/ui/button';
-import { PopUp } from '../../../../shared/ui/pop-up/pop-up';
-import { createEmptyFormData } from '../../utils/helpers';
+import { DxFormComponent, DxFormTypes } from 'devextreme-angular/ui/form';
 
 @Component({
   selector: 'app-add-event-popup',

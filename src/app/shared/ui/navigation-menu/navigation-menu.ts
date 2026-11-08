@@ -1,7 +1,6 @@
 import { Component, computed, input, output } from '@angular/core';
+import { NAVIGATION } from '@app/layout/navigation.config';
 import { DxTreeViewComponent, DxTreeViewTypes } from 'devextreme-angular/ui/tree-view';
-
-import { NAVIGATION } from '../../../layout/navigation.config';
 
 @Component({
   selector: 'app-navigation-menu',

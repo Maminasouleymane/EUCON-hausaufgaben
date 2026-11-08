@@ -1,6 +1,7 @@
-import { Participant } from '../models/participant.model';
 import { Injectable } from '@angular/core';
 import CustomStore from 'devextreme/data/custom_store';
+
+import { Participant } from '../models/participant.model';
 import { generateParticipants, simulateNetwork } from '../utils/helpers';
 
 @Injectable({ providedIn: 'root' })
@@ -18,6 +19,7 @@ export class ParticipantsService {
 
   private insert(eventId: number, values: Omit<Participant, 'id'>): Promise<Participant> {
     const participants = this.getParticipants(eventId);
+    // The 0 seed keeps this safe if participants is ever empty (Math.max() alone is -Infinity).
     const id = Math.max(0, ...participants.map((participant) => participant.id)) + 1;
     const participant: Participant = { id, ...values };
     participants.push(participant);

@@ -1,8 +1,8 @@
+import { Injectable } from '@angular/core';
 import { lastValueFrom, of } from 'rxjs';
 
-import { EventStatus } from '../models/event.model';
-import { Injectable } from '@angular/core';
 import { STATUSES } from '../models/constant';
+import { EventStatus } from '../models/event.model';
 
 @Injectable({ providedIn: 'root' })
 export class StatusesService {

@@ -1,8 +1,7 @@
 import { Component, input, output } from '@angular/core';
-import { DxTabsComponent, DxTabsTypes } from 'devextreme-angular/ui/tabs';
-
-import { ActionBarAction } from '../../models/action-bar.model';
+import { ActionBarAction } from '@shared/models/action-bar.model';
 import { DxButtonComponent } from 'devextreme-angular/ui/button';
+import { DxTabsComponent, DxTabsTypes } from 'devextreme-angular/ui/tabs';
 
 @Component({
   selector: 'app-action-bar',

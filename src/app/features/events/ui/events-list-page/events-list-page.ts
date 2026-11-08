@@ -1,27 +1,27 @@
-import { ALL, EVENTS_TABS } from '../../models/constant';
 import { Component, computed, inject, resource, signal, viewChild } from '@angular/core';
-import { D_MMM_YYYY, DateRange } from '../../models/date.model';
-import { DxTextBoxComponent, DxTextBoxTypes } from 'devextreme-angular/ui/text-box';
-import { EventRecord, NewEventFormData } from '../../models/event.model';
-
-import { ActionBarAction } from '../../../../shared/models/action-bar.model';
-import { AddEventPopup } from '../add-event-popup/add-event-popup';
-import { DataGrid } from '../../../../shared/ui/data-grid/data-grid';
+import { ALL, EVENTS_TABS } from '@features/events/models/constant';
+import { D_MMM_YYYY, DateRange } from '@features/events/models/date.model';
+import { EventRecord, NewEventFormData } from '@features/events/models/event.model';
+import { EventsService } from '@features/events/services/events.service';
+import { LocationsService } from '@features/events/services/locations.service';
+import { StatusesService } from '@features/events/services/statuses.service';
+import { ListPageTab } from '@shared/directives/list-page-tab/list-page-tab';
+import { ActionBarAction } from '@shared/models/action-bar.model';
+import { DataGrid } from '@shared/ui/data-grid/data-grid';
+import { FilterBar } from '@shared/ui/filter-bar/filter-bar';
+import { FilterField } from '@shared/ui/filter-field/filter-field';
+import { ListPage } from '@shared/ui/list-page/list-page';
+import notify from 'devextreme/ui/notify';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { DxDateRangeBoxComponent } from 'devextreme-angular/ui/date-range-box';
 import { DxDateRangeBoxTypes } from 'devextreme-angular/ui/date-range-box';
 import { DxSelectBoxComponent } from 'devextreme-angular/ui/select-box';
 import { DxSelectBoxTypes } from 'devextreme-angular/ui/select-box';
+import { DxTextBoxComponent, DxTextBoxTypes } from 'devextreme-angular/ui/text-box';
+
+import { AddEventPopup } from '../add-event-popup/add-event-popup';
 import { EventParticipants } from '../event-participants/event-participants';
-import { EventsService } from '../../services/events.service';
 import { EventsStatistics } from '../events-statistics/events-statistics';
-import { FilterBar } from '../../../../shared/ui/filter-bar/filter-bar';
-import { FilterField } from '../../../../shared/ui/filter-field/filter-field';
-import { ListPage } from '../../../../shared/ui/list-page/list-page';
-import { ListPageTab } from '../../../../shared/directives/list-page-tab/list-page-tab';
-import { LocationsService } from '../../services/locations.service';
-import { StatusesService } from '../../services/statuses.service';
-import notify from 'devextreme/ui/notify';
 
 @Component({
   selector: 'app-events-list-page',
@@ -205,6 +205,7 @@ export class EventsListPage {
       filters.push(['date', '<=', end]);
     }
 
+    // Nests into DevExtreme's [cond, 'and', cond] combined-filter expression shape.
     const combined = filters.reduce<unknown[] | null>(
       (acc, part) => (acc ? [acc, 'and', part] : part),
       null,

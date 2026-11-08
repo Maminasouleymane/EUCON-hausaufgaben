@@ -1,12 +1,12 @@
+import { Injectable } from '@angular/core';
 import type { LoadOptions, LoadResult } from 'devextreme/common/data';
-import { generateEvents, simulateNetwork, toSortDescriptors } from '../utils/helpers';
-
 import CustomStore from 'devextreme/data/custom_store';
+import query from 'devextreme/data/query';
+
 import { EVENT_COUNT } from '../models/constant';
 import { EventRecord } from '../models/event.model';
-import { Injectable } from '@angular/core';
 import { ParticipantSummaryItem } from '../models/participant.model';
-import query from 'devextreme/data/query';
+import { generateEvents, simulateNetwork, toSortDescriptors } from '../utils/helpers';
 
 @Injectable({ providedIn: 'root' })
 export class EventsService {
@@ -40,6 +40,7 @@ export class EventsService {
   }
 
   private insert(values: Omit<EventRecord, 'id'>): Promise<EventRecord> {
+    // The 0 seed keeps this safe if this.events is ever empty (Math.max() alone is -Infinity).
     const id = Math.max(0, ...this.events.map((event) => event.id)) + 1;
     const event: EventRecord = { id, ...values };
 
@@ -64,6 +65,7 @@ export class EventsService {
       data = query(data).filter(options.filter).toArray();
     }
 
+    // Captured after search/filter but before sort/paging, so it reflects the full matched count.
     const totalCount = data.length;
 
     let result = query(data);

@@ -1,6 +1,7 @@
+import { LoadOptions } from 'devextreme/common/data';
+
 import { EventRecord } from '../models/event.model';
 import { EventsService } from './events.service';
-import { LoadOptions } from 'devextreme/common/data';
 
 describe('EventsService', () => {
   let service: EventsService;

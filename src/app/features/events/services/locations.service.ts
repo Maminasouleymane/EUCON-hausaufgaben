@@ -1,6 +1,6 @@
+import { Injectable } from '@angular/core';
 import { lastValueFrom, of } from 'rxjs';
 
-import { Injectable } from '@angular/core';
 import { LOCATIONS } from '../models/constant';
 
 @Injectable({ providedIn: 'root' })

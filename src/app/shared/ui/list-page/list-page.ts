@@ -1,9 +1,9 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, contentChildren, input, signal } from '@angular/core';
+import { ListPageTab } from '@shared/directives/list-page-tab/list-page-tab';
+import { ActionBarAction } from '@shared/models/action-bar.model';
 
 import { ActionBar } from '../action-bar/action-bar';
-import { ActionBarAction } from '../../models/action-bar.model';
-import { ListPageTab } from '../../directives/list-page-tab/list-page-tab';
-import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-list-page',

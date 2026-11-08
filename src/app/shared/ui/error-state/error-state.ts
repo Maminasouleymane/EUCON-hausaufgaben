@@ -1,5 +1,4 @@
 import { Component, input, output } from '@angular/core';
-
 import { DxButtonComponent } from 'devextreme-angular/ui/button';
 
 @Component({
