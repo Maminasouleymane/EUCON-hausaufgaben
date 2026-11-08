@@ -2,6 +2,8 @@
 
 An Angular 21 + DevExtreme take-home exercise: an events list/detail screen (participants sub-grid, status/location statistics) built as a reusable shell so future areas — Venues, Invoices — don't require rebuilding the same page structure from scratch.
 
+**Live demo:** https://maminasouleymane.github.io/EUCON-hausaufgaben/
+
 ## Setup
 
 Requires Node `^20.19.0 || ^22.12.0 || >=24.0.0` and pnpm `>=11.22.0`.
