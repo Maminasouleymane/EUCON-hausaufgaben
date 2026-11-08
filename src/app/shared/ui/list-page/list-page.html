@@ -3,10 +3,8 @@
   [subtitle]="subtitle()"
   [tabs]="tabs()"
   [selectedTabIndex]="selectedTabIndex()"
-  [addButtonText]="addButtonText()"
+  [actions]="actions()"
   (tabIndexChange)="selectedTabIndex.set($event)"
-  (add)="add.emit()"
-  (exportExcel)="exportExcel.emit()"
 >
   <ng-content select="[filters]" filters />
 </app-action-bar>

@@ -1,6 +1,7 @@
 import { Component, input, output } from '@angular/core';
 import { DxTabsComponent, DxTabsTypes } from 'devextreme-angular/ui/tabs';
 
+import { ActionBarAction } from '../../models/action-bar.model';
 import { DxButtonComponent } from 'devextreme-angular/ui/button';
 
 @Component({
@@ -14,11 +15,9 @@ export class ActionBar {
   readonly subtitle = input('');
   readonly tabs = input<string[]>([]);
   readonly selectedTabIndex = input(0);
-  readonly addButtonText = input('Add');
+  readonly actions = input<ActionBarAction[]>([]);
 
   readonly tabIndexChange = output<number>();
-  readonly add = output<void>();
-  readonly exportExcel = output<void>();
 
   protected onTabClick(event: DxTabsTypes.ItemClickEvent): void {
     if (typeof event.itemIndex === 'number') {

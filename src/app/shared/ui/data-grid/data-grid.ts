@@ -11,7 +11,7 @@ import { SingleMultipleOrNone } from 'devextreme/common';
 import { Workbook } from 'devextreme-exceljs-fork';
 import { exportDataGrid } from 'devextreme-angular/common/export/excel';
 import { saveAs } from 'file-saver';
-import { DATE_FORMAT } from '../../../features/events/models/date.model';
+import { DD_MM_YYYY } from '../../../features/events/models/date.model';
 
 @Component({
   selector: 'app-data-grid',
@@ -85,7 +85,7 @@ export class DataGrid<T, TKey = unknown> {
       worksheet,
       customizeCell: ({ gridCell, excelCell }) => {
         if (gridCell?.rowType === 'data' && gridCell.column?.dataType === 'date') {
-          excelCell.numFmt = DATE_FORMAT;
+          excelCell.numFmt = DD_MM_YYYY;
         }
       },
     });

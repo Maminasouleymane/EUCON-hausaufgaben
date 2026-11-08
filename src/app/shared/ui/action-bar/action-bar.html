@@ -7,19 +7,15 @@
   </div>
 
   <div class="page-header__actions">
-    <dx-button
-      text="Export"
-      icon="download"
-      stylingMode="outlined"
-      (onClick)="exportExcel.emit()"
-    />
-    <dx-button
-      [text]="addButtonText()"
-      icon="plus"
-      type="default"
-      stylingMode="contained"
-      (onClick)="add.emit()"
-    />
+    @for (action of actions(); track action.label) {
+      <dx-button
+        [text]="action.label"
+        [icon]="action.icon ?? ''"
+        [type]="action.type ?? 'normal'"
+        [stylingMode]="action.stylingMode ?? 'contained'"
+        (onClick)="action.onClick()"
+      />
+    }
   </div>
 </div>
 

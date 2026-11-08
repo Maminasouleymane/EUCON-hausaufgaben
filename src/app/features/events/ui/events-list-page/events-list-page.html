@@ -2,36 +2,21 @@
   title="Events"
   subtitle="Plan, track and manage all events."
   [tabs]="tabs"
-  addButtonText="Add Event"
-  (add)="onAdd()"
-  (exportExcel)="onExport()"
+  [actions]="actions"
 >
-  <div filters class="events-filters">
+  <app-filter-bar filters (resetFilters)="onResetFilters()">
     <dx-text-box
       class="filter-search"
       placeholder="Search events..."
       mode="search"
+      valueChangeEvent="input"
+      [value]="searchTerm()"
       [showClearButton]="true"
-      (onInput)="onSearch($event.component.option('text') ?? '')"
+      (onValueChanged)="onSearchChange($event)"
     />
 
-    <div class="filter-field">
-      <span class="filter-field__label">Status:</span>
+    <app-filter-field label="Location:">
       <dx-select-box
-        class="filter-field__input"
-        [items]="statusOptions()"
-        [value]="selectedStatus()"
-        stylingMode="underlined"
-        [showDropDownButton]="true"
-        [dropDownOptions]="{ width: 'auto', minWidth: 160 }"
-        (onValueChanged)="onStatusChange($event)"
-      />
-    </div>
-
-    <div class="filter-field">
-      <span class="filter-field__label">Location:</span>
-      <dx-select-box
-        class="filter-field__input"
         [items]="locationOptions()"
         [value]="selectedLocation()"
         stylingMode="underlined"
@@ -39,7 +24,18 @@
         [dropDownOptions]="{ width: 'auto', minWidth: 160 }"
         (onValueChanged)="onLocationChange($event)"
       />
-    </div>
+    </app-filter-field>
+
+    <app-filter-field label="Status:">
+      <dx-select-box
+        [items]="statusOptions()"
+        [value]="selectedStatus()"
+        stylingMode="underlined"
+        [showDropDownButton]="true"
+        [dropDownOptions]="{ width: 'auto', minWidth: 160 }"
+        (onValueChanged)="onStatusChange($event)"
+      />
+    </app-filter-field>
 
     <dx-date-range-box
       class="filter-date-range"
@@ -50,12 +46,7 @@
       [endDate]="dateRange().end"
       (onValueChanged)="onDateRangeChange($event)"
     />
-
-    <button type="button" class="reset-btn" (click)="onResetFilters()">
-      <i class="dx-icon dx-icon-revert"></i>
-      Reset filters
-    </button>
-  </div>
+  </app-filter-bar>
 
   <app-data-grid
     primary
@@ -63,7 +54,7 @@
     [columnsDefinition]="columns()"
     [masterDetailEnabled]="true"
     [cellPrepared]="onStatusCellPrepared"
-    storageKey="events-grid"
+    storageKey="events-grid-v2"
     pagerInfoText="Page {0} of {1} ({2} events)"
   >
     <ng-template let-detailInfo>

@@ -2,6 +2,7 @@ import { Component, computed, input, output, signal, viewChild } from '@angular/
 import { DxFormComponent, DxFormTypes } from 'devextreme-angular/ui/form';
 import { EventStatus, NewEventFormData } from '../../models/event.model';
 
+import { D_MMM_YYYY } from '../../models/date.model';
 import { DxButtonComponent } from 'devextreme-angular/ui/button';
 import { PopUp } from '../../../../shared/ui/pop-up/pop-up';
 import { createEmptyFormData } from '../../utils/helpers';
@@ -49,7 +50,7 @@ export class AddEventPopup {
       dataField: 'date',
       editorType: 'dxDateBox',
       label: { text: 'Date' },
-      editorOptions: { displayFormat: 'MMM d, yyyy' },
+      editorOptions: { displayFormat: D_MMM_YYYY },
       validationRules: [
         { type: 'required', message: 'Date is required' },
         {

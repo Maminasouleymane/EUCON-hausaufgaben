@@ -1,19 +1,22 @@
 import { ALL, EVENTS_TABS } from '../../models/constant';
 import { Component, computed, inject, signal, viewChild } from '@angular/core';
+import { D_MMM_YYYY, DateRange } from '../../models/date.model';
+import { DxTextBoxComponent, DxTextBoxTypes } from 'devextreme-angular/ui/text-box';
 import { EventRecord, EventStatus, NewEventFormData } from '../../models/event.model';
 
+import { ActionBarAction } from '../../../../shared/models/action-bar.model';
 import { AddEventPopup } from '../add-event-popup/add-event-popup';
 import { DataGrid } from '../../../../shared/ui/data-grid/data-grid';
-import { DateRange } from '../../models/date.model';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { DxDateRangeBoxComponent } from 'devextreme-angular/ui/date-range-box';
 import { DxDateRangeBoxTypes } from 'devextreme-angular/ui/date-range-box';
 import { DxSelectBoxComponent } from 'devextreme-angular/ui/select-box';
 import { DxSelectBoxTypes } from 'devextreme-angular/ui/select-box';
-import { DxTextBoxComponent } from 'devextreme-angular/ui/text-box';
 import { EventParticipants } from '../event-participants/event-participants';
 import { EventsService } from '../../services/events.service';
 import { EventsStatistics } from '../events-statistics/events-statistics';
+import { FilterBar } from '../../../../shared/ui/filter-bar/filter-bar';
+import { FilterField } from '../../../../shared/ui/filter-field/filter-field';
 import { ListPage } from '../../../../shared/ui/list-page/list-page';
 import { LocationsService } from '../../services/locations.service';
 import { StatusesService } from '../../services/statuses.service';
@@ -24,6 +27,8 @@ import notify from 'devextreme/ui/notify';
   imports: [
     ListPage,
     DataGrid,
+    FilterBar,
+    FilterField,
     DxSelectBoxComponent,
     DxDateRangeBoxComponent,
     DxTextBoxComponent,
@@ -62,7 +67,7 @@ export class EventsListPage {
       dataField: 'date',
       caption: 'Date',
       dataType: 'date',
-      format: 'MMM d, yyyy',
+      format: D_MMM_YYYY,
       sortOrder: 'asc',
     },
   ]);
@@ -74,18 +79,32 @@ export class EventsListPage {
   protected readonly selectedLocation = signal<string>(ALL);
   protected readonly dateRange = signal<DateRange>({ start: null, end: null });
   protected readonly activeFilter = signal<unknown[] | null>(null);
+  protected readonly searchTerm = signal('');
 
   private readonly grid = viewChild(DataGrid);
   private readonly addPopup = viewChild(AddEventPopup);
   protected readonly isAddPopupOpen = signal(false);
+
+  protected readonly actions: ActionBarAction[] = [
+    { label: 'Export', icon: 'download', stylingMode: 'outlined', onClick: () => this.onExport() },
+    {
+      label: 'Add Event',
+      icon: 'plus',
+      type: 'default',
+      stylingMode: 'contained',
+      onClick: () => this.onAdd(),
+    },
+  ];
 
   constructor() {
     this.statusesService.getStatuses().subscribe((statuses) => this.statuses.set(statuses));
     this.locationsService.getLocations().subscribe((locations) => this.locations.set(locations));
   }
 
-  protected onSearch(term: string): void {
-    this.grid()?.search(term);
+  protected onSearchChange({ value }: DxTextBoxTypes.ValueChangedEvent): void {
+    const searchTerm = value?.toString() ?? '';
+    this.searchTerm.set(searchTerm);
+    this.grid()?.search(searchTerm);
   }
 
   protected onStatusChange({ value }: DxSelectBoxTypes.ValueChangedEvent): void {
@@ -113,6 +132,7 @@ export class EventsListPage {
     this.selectedLocation.set(ALL);
     this.dateRange.set({ start: null, end: null });
     this.activeFilter.set(null);
+    this.searchTerm.set('');
     this.grid()?.reset();
   }
 

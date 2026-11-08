@@ -1,11 +1,3 @@
-.events-filters {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  width: 100%;
-}
-
 ::ng-deep .filter-search {
   width: 220px;
 
@@ -14,63 +6,10 @@
   }
 }
 
-.filter-field {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  height: 36px;
-  padding: 0 10px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-
-  &__label {
-    font-size: 0.875rem;
-    color: var(--color-text-muted);
-    white-space: nowrap;
-  }
-}
-
-::ng-deep .filter-field__input {
-  width: 90px;
-
-  &.dx-texteditor.dx-editor-underlined {
-    border: none;
-
-    &::after {
-      border-bottom: none;
-    }
-  }
-
-  .dx-texteditor-input {
-    padding: 0;
-    font-size: 0.875rem;
-    color: var(--color-text);
-  }
-}
-
 ::ng-deep .filter-date-range {
   border-radius: var(--radius-md);
 
   .dx-texteditor-input-container {
     border-radius: var(--radius-md);
-  }
-}
-
-.reset-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  height: 36px;
-  padding: 0 4px;
-  margin-left: auto;
-  border: none;
-  background: transparent;
-  color: var(--color-text-muted);
-  font-size: 0.875rem;
-  cursor: pointer;
-
-  &:hover {
-    color: var(--color-text);
   }
 }
