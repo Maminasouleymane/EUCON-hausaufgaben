@@ -1,0 +1,11 @@
+<div class="error-state">
+  <i class="dx-icon dx-icon-warning error-state__icon"></i>
+  <p class="error-state__message">{{ message() }}</p>
+  <dx-button
+    text="Retry"
+    type="default"
+    stylingMode="contained"
+    icon="refresh"
+    (onClick)="retry.emit()"
+  />
+</div>

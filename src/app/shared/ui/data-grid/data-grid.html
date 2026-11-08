@@ -1,32 +1,37 @@
-<dx-data-grid
-  [dataSource]="dataSource()"
-  [remoteOperations]="remoteOperations()"
-  [columns]="columnsDefinition()"
-  [showBorders]="showBorders()"
-  [columnAutoWidth]="true"
-  [allowColumnResizing]="true"
-  [height]="fillHeight() ? '100%' : undefined"
-  [paging]="{ enabled: pagingEnabled(), pageSize: pageSize() }"
-  [pager]="{
-    visible: pagingEnabled(),
-    showPageSizeSelector: true,
-    allowedPageSizes: allowedPageSizes(),
-    showInfo: true,
-    infoText: pagerInfoText(),
-  }"
-  [selection]="{ mode: selectionMode() }"
-  [editing]="{
-    allowUpdating: allowUpdating(),
-    allowAdding: allowAdding(),
-    allowDeleting: allowDeleting(),
-  }"
-  [stateStoring]="{ enabled: true, storageKey: storageKey() }"
-  [masterDetail]="{ enabled: masterDetailEnabled(), template: 'detail' }"
-  (onCellPrepared)="cellPrepared()?.($event)"
->
-  @if (masterDetailTemplate(); as template) {
-    <div *dxTemplate="let detailInfo of 'detail'">
-      <ng-container *ngTemplateOutlet="template; context: { $implicit: detailInfo }" />
-    </div>
-  }
-</dx-data-grid>
+@if (hasError()) {
+  <app-error-state (retry)="retry()" />
+} @else {
+  <dx-data-grid
+    [dataSource]="dataSource()"
+    [remoteOperations]="remoteOperations()"
+    [columns]="columnsDefinition()"
+    [showBorders]="showBorders()"
+    [columnAutoWidth]="true"
+    [allowColumnResizing]="true"
+    [height]="fillHeight() ? '100%' : undefined"
+    [paging]="{ enabled: pagingEnabled(), pageSize: pageSize() }"
+    [pager]="{
+      visible: pagingEnabled(),
+      showPageSizeSelector: true,
+      allowedPageSizes: allowedPageSizes(),
+      showInfo: true,
+      infoText: pagerInfoText(),
+    }"
+    [selection]="{ mode: selectionMode() }"
+    [editing]="{
+      allowUpdating: allowUpdating(),
+      allowAdding: allowAdding(),
+      allowDeleting: allowDeleting(),
+    }"
+    [stateStoring]="{ enabled: true, storageKey: storageKey() }"
+    [masterDetail]="{ enabled: masterDetailEnabled(), template: 'detail' }"
+    (onCellPrepared)="cellPrepared()?.($event)"
+    (onDataErrorOccurred)="onDataErrorOccurred()"
+  >
+    @if (masterDetailTemplate(); as template) {
+      <div *dxTemplate="let detailInfo of 'detail'">
+        <ng-container *ngTemplateOutlet="template; context: { $implicit: detailInfo }" />
+      </div>
+    }
+  </dx-data-grid>
+}

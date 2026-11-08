@@ -1,9 +1,10 @@
-import { Component, TemplateRef, contentChild, input, viewChild } from '@angular/core';
+import { Component, TemplateRef, contentChild, input, signal, viewChild } from '@angular/core';
 
 import CustomStore from 'devextreme/data/custom_store';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { DxTemplateDirective } from 'devextreme-angular/core';
+import { ErrorState } from '../error-state/error-state';
 import { NgTemplateOutlet } from '@angular/common';
 import { PagerPageSize } from 'devextreme/common/grids';
 import { SingleMultipleOrNone } from 'devextreme/common';
@@ -14,7 +15,7 @@ import { DATE_FORMAT } from '../../../features/events/models/date.model';
 
 @Component({
   selector: 'app-data-grid',
-  imports: [DxDataGridComponent, DxTemplateDirective, NgTemplateOutlet],
+  imports: [DxDataGridComponent, DxTemplateDirective, NgTemplateOutlet, ErrorState],
   templateUrl: './data-grid.html',
   styleUrl: './data-grid.scss',
   host: {
@@ -45,35 +46,42 @@ export class DataGrid<T, TKey = unknown> {
     TemplateRef<DxDataGridTypes.MasterDetailTemplateData<T, TKey>>,
   );
 
-  private readonly grid = viewChild.required(DxDataGridComponent);
+  private readonly grid = viewChild(DxDataGridComponent);
+
+  protected readonly hasError = signal(false);
 
   search(term: string): void {
-    this.grid().instance.searchByText(term);
+    this.grid()?.instance.searchByText(term);
   }
 
   filterBy(filterExpr: unknown): void {
     if (filterExpr) {
-      this.grid().instance.filter(filterExpr);
+      this.grid()?.instance.filter(filterExpr);
     } else {
-      this.grid().instance.clearFilter();
+      this.grid()?.instance.clearFilter();
     }
   }
 
   reset(): void {
-    this.grid().instance.clearFilter();
-    this.grid().instance.searchByText('');
+    this.grid()?.instance.clearFilter();
+    this.grid()?.instance.searchByText('');
   }
 
   refresh(): void {
-    this.grid().instance.refresh();
+    this.grid()?.instance.refresh();
   }
 
   async exportToExcel(filename: string): Promise<void> {
+    const grid = this.grid();
+    if (!grid) {
+      return;
+    }
+
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet('Sheet1');
 
     await exportDataGrid({
-      component: this.grid().instance,
+      component: grid.instance,
       worksheet,
       customizeCell: ({ gridCell, excelCell }) => {
         if (gridCell?.rowType === 'data' && gridCell.column?.dataType === 'date') {
@@ -84,5 +92,16 @@ export class DataGrid<T, TKey = unknown> {
 
     const buffer = await workbook.xlsx.writeBuffer();
     saveAs(new Blob([buffer], { type: 'application/octet-stream' }), filename);
+  }
+
+  protected onDataErrorOccurred(): void {
+    const grid = this.grid();
+    if (grid && grid.instance.totalCount() <= 0) {
+      this.hasError.set(true);
+    }
+  }
+
+  protected retry(): void {
+    this.hasError.set(false);
   }
 }

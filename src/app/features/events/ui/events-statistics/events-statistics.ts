@@ -1,8 +1,11 @@
 import { Component, inject, input, resource } from '@angular/core';
+
+import { ErrorState } from '../../../../shared/ui/error-state/error-state';
 import { EventsService } from '../../services/events.service';
 
 @Component({
   selector: 'app-events-statistics',
+  imports: [ErrorState],
   templateUrl: './events-statistics.html',
   styleUrl: './events-statistics.scss',
 })
