@@ -1,5 +1,13 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, contentChild, input, signal, TemplateRef, viewChild } from '@angular/core';
+import {
+  Component,
+  contentChild,
+  input,
+  output,
+  signal,
+  TemplateRef,
+  viewChild,
+} from '@angular/core';
 import { DD_MM_YYYY } from '@shared/models/date.model';
 import { SingleMultipleOrNone } from 'devextreme/common';
 import { PagerPageSize } from 'devextreme/common/grids';
@@ -50,21 +58,41 @@ export class DataGrid<T, TKey = unknown> {
 
   protected readonly hasError = signal(false);
 
+  activeFilter = signal<unknown>(null);
+
+  /** Emits once, after the grid has rendered for the first time. */
+  readonly ready = output<void>();
+  private readyEmitted = false;
+
+  protected onContentReady(): void {
+    if (!this.readyEmitted) {
+      this.readyEmitted = true;
+      this.ready.emit();
+    }
+  }
+
   search(term: string): void {
     this.grid()?.instance.searchByText(term);
   }
 
-  filterBy(filterExpr: unknown): void {
-    if (filterExpr) {
-      this.grid()?.instance.filter(filterExpr);
-    } else {
-      this.grid()?.instance.clearFilter();
+  onOptionChanged({ fullName, name, component }: DxDataGridTypes.OptionChangedEvent) {
+    if (fullName === 'filterValue' || fullName === 'searchPanel.text' || name === 'columns') {
+      const filter = component.getCombinedFilter(true);
+      // undefined => no filter or disposed instance; keep last known value
+      if (filter !== undefined) {
+        this.activeFilter.set(filter);
+      }
     }
+  }
+
+  filterBy(filterExpr: unknown): void {
+    this.grid()?.instance.option('filterValue', (filterExpr as unknown[] | null) || null);
   }
 
   reset(): void {
     this.grid()?.instance.clearFilter();
     this.grid()?.instance.searchByText('');
+    this.activeFilter.set(null);
   }
 
   refresh(): void {

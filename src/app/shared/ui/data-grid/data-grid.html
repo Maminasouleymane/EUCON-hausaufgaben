@@ -27,6 +27,8 @@
     [masterDetail]="{ enabled: masterDetailEnabled(), template: 'detail' }"
     (onCellPrepared)="cellPrepared()?.($event)"
     (onDataErrorOccurred)="onDataErrorOccurred()"
+    (onOptionChanged)="onOptionChanged($event)"
+    (onContentReady)="onContentReady()"
   >
     @if (masterDetailTemplate(); as template) {
       <div *dxTemplate="let detailInfo of 'detail'">

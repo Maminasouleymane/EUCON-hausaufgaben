@@ -1,3 +1,4 @@
+import { DateRange } from './date.model';
 import { EventStatus } from './event.model';
 
 export const EVENT_COUNT = 5000;
@@ -56,3 +57,11 @@ export const LAST_NAMES = [
 
 export const EVENTS_TABS = ['List', 'Statistics'];
 export const ALL = 'All';
+export const FILTER_BAR_KEY = 'events-filter-bar-v1';
+
+export interface FilterBarState {
+  status: string;
+  location: string;
+  dateRange: DateRange;
+  search: string;
+}

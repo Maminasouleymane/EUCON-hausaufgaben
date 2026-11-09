@@ -55,6 +55,7 @@
       [masterDetailEnabled]="true"
       [cellPrepared]="onStatusCellPrepared"
       storageKey="events-grid-v2"
+      (ready)="onGridReady()"
       pagerInfoText="Page {0} of {1} ({2} events)"
     >
       <ng-template let-detailInfo>

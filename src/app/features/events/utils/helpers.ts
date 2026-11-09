@@ -1,8 +1,11 @@
 import { SortDescriptor } from 'devextreme/data';
 
 import {
+  ALL,
   ERROR_RATE,
   EVENT_NAMES,
+  FILTER_BAR_KEY,
+  FilterBarState,
   FIRST_NAMES,
   LAST_NAMES,
   LOCATIONS,
@@ -13,6 +16,7 @@ import {
   PARTICIPANT_ROLES,
   STATUSES,
 } from '../models/constant';
+import { DateRange } from '../models/date.model';
 import { EventRecord, NewEventFormData } from '../models/event.model';
 import { Participant } from '../models/participant.model';
 
@@ -87,4 +91,59 @@ export function toSortDescriptors(
 
 export function createEmptyFormData(): NewEventFormData {
   return { name: '', location: null, status: null, date: null, participantCount: null };
+}
+
+export function filterBuilder(
+  status: string,
+  location: string,
+  { start, end }: DateRange,
+): unknown[] | null {
+  const filters: unknown[][] = [];
+
+  if (status !== ALL) {
+    filters.push(['status', '=', status]);
+  }
+  if (location !== ALL) {
+    filters.push(['location', '=', location]);
+  }
+  if (start) {
+    filters.push(['date', '>=', start]);
+  }
+  if (end) {
+    filters.push(['date', '<=', end]);
+  }
+
+  // Nests into DevExtreme's [cond, 'and', cond] combined-filter expression shape.
+  return filters.reduce<unknown[] | null>((acc, part) => (acc ? [acc, 'and', part] : part), null);
+}
+
+export function loadFilterBar(): FilterBarState {
+  const empty: FilterBarState = {
+    status: ALL,
+    location: ALL,
+    dateRange: { start: null, end: null },
+    search: '',
+  };
+  try {
+    const raw = localStorage.getItem(FILTER_BAR_KEY);
+    if (!raw) {
+      return empty;
+    }
+    const s = JSON.parse(raw);
+    return {
+      status: s.status ?? ALL,
+      location: s.location ?? ALL,
+      dateRange: {
+        start: s.dateRange?.start ? new Date(s.dateRange.start) : null,
+        end: s.dateRange?.end ? new Date(s.dateRange.end) : null,
+      },
+      search: s.search ?? '',
+    };
+  } catch {
+    return empty;
+  }
+}
+
+export function saveFilterBar(state: FilterBarState): void {
+  localStorage.setItem(FILTER_BAR_KEY, JSON.stringify(state));
 }

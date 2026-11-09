@@ -1,4 +1,4 @@
-import { Component, computed, inject, resource, signal, viewChild } from '@angular/core';
+import { Component, computed, effect, inject, resource, signal, viewChild } from '@angular/core';
 import { ALL, EVENTS_TABS } from '@features/events/models/constant';
 import { D_MMM_YYYY, DateRange } from '@features/events/models/date.model';
 import { EventRecord, NewEventFormData } from '@features/events/models/event.model';
@@ -19,6 +19,7 @@ import { DxSelectBoxComponent } from 'devextreme-angular/ui/select-box';
 import { DxSelectBoxTypes } from 'devextreme-angular/ui/select-box';
 import { DxTextBoxComponent, DxTextBoxTypes } from 'devextreme-angular/ui/text-box';
 
+import { filterBuilder, loadFilterBar, saveFilterBar } from '../../utils/helpers';
 import { AddEventPopup } from '../add-event-popup/add-event-popup';
 import { EventParticipants } from '../event-participants/event-participants';
 import { EventsStatistics } from '../events-statistics/events-statistics';
@@ -89,11 +90,15 @@ export class EventsListPage {
     ...this.locationsResource.value(),
   ]);
 
-  protected readonly selectedStatus = signal<string>(ALL);
-  protected readonly selectedLocation = signal<string>(ALL);
-  protected readonly dateRange = signal<DateRange>({ start: null, end: null });
-  protected readonly activeFilter = signal<unknown[] | null>(null);
-  protected readonly searchTerm = signal('');
+  private readonly saved = loadFilterBar();
+
+  protected readonly selectedStatus = signal<string>(this.saved.status);
+  protected readonly selectedLocation = signal<string>(this.saved.location);
+  protected readonly dateRange = signal<DateRange>(this.saved.dateRange);
+  protected readonly activeFilter = signal<unknown[] | null>(
+    filterBuilder(this.saved.status, this.saved.location, this.saved.dateRange),
+  );
+  protected readonly searchTerm = signal(this.saved.search);
 
   private readonly grid = viewChild(DataGrid);
   private readonly addPopup = viewChild(AddEventPopup);
@@ -109,6 +114,32 @@ export class EventsListPage {
       onClick: () => this.onAdd(),
     },
   ];
+
+  constructor() {
+    // save the filter bar state to localStorage whenever it changes, so it can be restored on page reload.
+    effect(() => {
+      saveFilterBar({
+        status: this.selectedStatus(),
+        location: this.selectedLocation(),
+        dateRange: this.dateRange(),
+        search: this.searchTerm(),
+      });
+    });
+  }
+
+  protected onGridReady(): void {
+    // Re-apply the restored filter bar state to the freshly created grid.
+    const grid = this.grid();
+    if (!grid) {
+      return;
+    }
+    if (this.activeFilter()) {
+      grid.filterBy(this.activeFilter());
+    }
+    if (this.searchTerm()) {
+      grid.search(this.searchTerm());
+    }
+  }
 
   protected onSearchChange({ value }: DxTextBoxTypes.ValueChangedEvent): void {
     const searchTerm = value?.toString() ?? '';
@@ -187,30 +218,12 @@ export class EventsListPage {
   }
 
   private applyFilters(): void {
-    const filters: unknown[][] = [];
-    const status = this.selectedStatus();
-    const location = this.selectedLocation();
-    const { start, end } = this.dateRange();
-
-    if (status !== ALL) {
-      filters.push(['status', '=', status]);
-    }
-    if (location !== ALL) {
-      filters.push(['location', '=', location]);
-    }
-    if (start) {
-      filters.push(['date', '>=', start]);
-    }
-    if (end) {
-      filters.push(['date', '<=', end]);
-    }
-
-    // Nests into DevExtreme's [cond, 'and', cond] combined-filter expression shape.
-    const combined = filters.reduce<unknown[] | null>(
-      (acc, part) => (acc ? [acc, 'and', part] : part),
-      null,
+    const combinedFilters = filterBuilder(
+      this.selectedStatus(),
+      this.selectedLocation(),
+      this.dateRange(),
     );
-    this.activeFilter.set(combined);
-    this.grid()?.filterBy(combined);
+    this.activeFilter.set(combinedFilters);
+    this.grid()?.filterBy(combinedFilters);
   }
 }
