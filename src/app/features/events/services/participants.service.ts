@@ -17,6 +17,19 @@ export class ParticipantsService {
     });
   }
 
+  getParticipants(eventId: number): Participant[] {
+    let participants = this.participantsByEvent.get(eventId);
+    if (!participants) {
+      participants = generateParticipants();
+      this.participantsByEvent.set(eventId, participants);
+    }
+    return participants;
+  }
+
+  seedParticipants(eventId: number, count: number): void {
+    this.participantsByEvent.set(eventId, generateParticipants(count));
+  }
+
   private insert(eventId: number, values: Omit<Participant, 'id'>): Promise<Participant> {
     const participants = this.getParticipants(eventId);
     // The 0 seed keeps this safe if participants is ever empty (Math.max() alone is -Infinity).
@@ -33,14 +46,5 @@ export class ParticipantsService {
       participants.splice(index, 1);
     }
     return simulateNetwork(undefined);
-  }
-
-  private getParticipants(eventId: number): Participant[] {
-    let participants = this.participantsByEvent.get(eventId);
-    if (!participants) {
-      participants = generateParticipants();
-      this.participantsByEvent.set(eventId, participants);
-    }
-    return participants;
   }
 }

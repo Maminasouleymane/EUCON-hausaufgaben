@@ -24,7 +24,10 @@ export function randomItem<T>(items: readonly T[]): T {
   return items[Math.floor(Math.random() * items.length)];
 }
 
-export function generateEvents(count: number): EventRecord[] {
+export function generateEvents(
+  count: number,
+  resolveParticipantCount: (eventId: number) => number,
+): EventRecord[] {
   const events: EventRecord[] = [];
 
   for (let id = 1; id <= count; id++) {
@@ -38,19 +41,20 @@ export function generateEvents(count: number): EventRecord[] {
       date,
       location: randomItem(LOCATIONS),
       status: randomItem(STATUSES),
-      participantCount: 3 + Math.floor(Math.random() * 8),
+      participantCount: resolveParticipantCount(id),
     });
   }
 
   return events;
 }
 
-export function generateParticipants(): Participant[] {
-  const count =
+export function generateParticipants(count?: number): Participant[] {
+  const resolvedCount =
+    count ??
     MIN_PARTICIPANTS + Math.floor(Math.random() * (MAX_PARTICIPANTS - MIN_PARTICIPANTS + 1));
   const participants: Participant[] = [];
 
-  for (let id = 1; id <= count; id++) {
+  for (let id = 1; id <= resolvedCount; id++) {
     const firstName = randomItem(FIRST_NAMES);
     const lastName = randomItem(LAST_NAMES);
 

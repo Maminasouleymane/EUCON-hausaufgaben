@@ -1,5 +1,7 @@
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 
+import { PARTICIPANT_ROLES } from './constant';
+
 export interface Participant {
   id: number;
   name: string;
@@ -26,6 +28,7 @@ export const PARTICIPANTS_COLUMNS: DxDataGridTypes.Column<Participant>[] = [
   {
     dataField: 'role',
     caption: 'Role',
+    lookup: { dataSource: PARTICIPANT_ROLES },
     validationRules: [{ type: 'required' }],
   },
 ];

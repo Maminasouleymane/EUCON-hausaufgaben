@@ -1,3 +1,4 @@
+import { TestBed } from '@angular/core/testing';
 import { LoadOptions } from 'devextreme/common/data';
 
 import { EventRecord } from '../models/event.model';
@@ -7,7 +8,7 @@ describe('EventsService', () => {
   let service: EventsService;
 
   beforeEach(() => {
-    service = new EventsService();
+    service = TestBed.inject(EventsService);
     // The 5000-event dataset above is generated with real randomness for
     // variety. From here on, pin Math.random so simulateNetwork's latency is
     // short and its ERROR_RATE-based random rejection never fires — without

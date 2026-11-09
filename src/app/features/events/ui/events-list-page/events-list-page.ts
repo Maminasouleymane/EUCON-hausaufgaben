@@ -4,6 +4,7 @@ import { D_MMM_YYYY, DateRange } from '@features/events/models/date.model';
 import { EventRecord, NewEventFormData } from '@features/events/models/event.model';
 import { EventsService } from '@features/events/services/events.service';
 import { LocationsService } from '@features/events/services/locations.service';
+import { ParticipantsService } from '@features/events/services/participants.service';
 import { StatusesService } from '@features/events/services/statuses.service';
 import { ListPageTab } from '@shared/directives/list-page-tab/list-page-tab';
 import { ActionBarAction } from '@shared/models/action-bar.model';
@@ -46,6 +47,7 @@ export class EventsListPage {
   private readonly eventsService = inject(EventsService);
   private readonly statusesService = inject(StatusesService);
   private readonly locationsService = inject(LocationsService);
+  private readonly participantsService = inject(ParticipantsService);
 
   protected readonly tabs = EVENTS_TABS;
   protected readonly dataSource = this.eventsService.createDataSource();
@@ -60,7 +62,7 @@ export class EventsListPage {
   });
 
   protected readonly columns = computed<DxDataGridTypes.Column<EventRecord>[]>(() => [
-    { dataField: 'name', caption: 'Event Name' },
+    { dataField: 'name', caption: 'Event Name', allowEditing: false },
     {
       dataField: 'location',
       caption: 'Location',
@@ -71,13 +73,19 @@ export class EventsListPage {
       caption: 'Status',
       lookup: { dataSource: this.statusesResource.value() },
     },
-    { dataField: 'participantCount', caption: 'Participants', dataType: 'number' },
+    {
+      dataField: 'participantCount',
+      caption: 'Participants',
+      dataType: 'number',
+      allowEditing: false,
+    },
     {
       dataField: 'date',
       caption: 'Date',
       dataType: 'date',
       format: D_MMM_YYYY,
       sortOrder: 'asc',
+      allowEditing: false,
     },
   ]);
 
@@ -200,14 +208,16 @@ export class EventsListPage {
     participantCount,
   }: NewEventFormData): Promise<void> {
     try {
-      await this.dataSource.insert({
+      const resolvedParticipantCount = participantCount ?? 3;
+      const createdEvent = await this.dataSource.insert({
         id: 0,
         name: name,
         location: location ?? '',
         status: status ?? 'planned',
         date: date ?? new Date(),
-        participantCount: participantCount ?? 3,
+        participantCount: resolvedParticipantCount,
       });
+      this.participantsService.seedParticipants(createdEvent.id, resolvedParticipantCount);
       notify('Event created successfully.', 'success', 2500);
       this.isAddPopupOpen.set(false);
       this.addPopup()?.resetForm();

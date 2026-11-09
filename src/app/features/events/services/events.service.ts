@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import type { LoadOptions, LoadResult } from 'devextreme/common/data';
 import CustomStore from 'devextreme/data/custom_store';
 import query from 'devextreme/data/query';
@@ -7,10 +7,15 @@ import { EVENT_COUNT } from '../models/constant';
 import { EventRecord } from '../models/event.model';
 import { ParticipantSummaryItem } from '../models/participant.model';
 import { generateEvents, simulateNetwork, toSortDescriptors } from '../utils/helpers';
+import { ParticipantsService } from './participants.service';
 
 @Injectable({ providedIn: 'root' })
 export class EventsService {
-  private readonly events = generateEvents(EVENT_COUNT);
+  private readonly participantsService = inject(ParticipantsService);
+  private readonly events = generateEvents(
+    EVENT_COUNT,
+    (id) => this.participantsService.getParticipants(id).length,
+  );
 
   getParticipantsByStatus(filter?: unknown[] | null): Promise<ParticipantSummaryItem[]> {
     return simulateNetwork(this.summarizeParticipantsBy((event) => event.status, filter));

@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { DD_MM_YYYY } from '@shared/models/date.model';
 import { SingleMultipleOrNone } from 'devextreme/common';
-import { PagerPageSize } from 'devextreme/common/grids';
+import { GridsEditMode, PagerPageSize } from 'devextreme/common/grids';
 import CustomStore from 'devextreme/data/custom_store';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { exportDataGrid } from 'devextreme-angular/common/export/excel';
@@ -49,6 +49,7 @@ export class DataGrid<T, TKey = unknown> {
   allowUpdating = input(true);
   allowAdding = input(false);
   allowDeleting = input(false);
+  editingMode = input<GridsEditMode>('row');
 
   protected readonly masterDetailTemplate = contentChild(
     TemplateRef<DxDataGridTypes.MasterDetailTemplateData<T, TKey>>,

@@ -28,7 +28,7 @@ export const EVENT_NAMES = [
 export const TABS = ['List', 'Statistics'];
 
 export const MIN_PARTICIPANTS = 3;
-export const MAX_PARTICIPANTS = 8;
+export const MAX_PARTICIPANTS = 10;
 export const PARTICIPANT_ROLES = ['Organizer', 'Speaker', 'Attendee', 'Staff'];
 export const FIRST_NAMES = [
   'Anna',
